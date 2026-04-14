@@ -1,0 +1,8 @@
+com\todo\backend\error\GlobalExceptionHandler.class
+com\todo\backend\dto\CreateTaskRequest.class
+com\todo\backend\logging\HttpRequestLoggingFilter.class
+com\todo\backend\dto\UpdateTaskRequest.class
+com\todo\backend\model\Task.class
+com\todo\backend\TodoSpringbootBackendApplication.class
+com\todo\backend\controller\TaskController.class
+com\todo\backend\service\TaskService.class
