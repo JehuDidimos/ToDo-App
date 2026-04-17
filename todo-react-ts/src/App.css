@@ -317,6 +317,132 @@ button.pill {
   border: 0;
 }
 
+/* --- Top-right CMYK preview menu --- */
+
+.cmykMenu {
+  position: fixed;
+  top: clamp(12px, 2.2vw, 22px);
+  right: clamp(12px, 2.2vw, 22px);
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.cmykMenu__toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.6));
+  box-shadow: 0 10px 30px rgba(22, 40, 56, 0.2);
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    transform 0.14s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.cmykMenu__toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(70, 126, 204, 0.58);
+}
+
+.cmykMenu__toggle:focus-visible {
+  outline: 2px solid rgba(50, 101, 187, 0.66);
+  outline-offset: 2px;
+}
+
+.cmykMenu__toggle.is-open {
+  border-color: rgba(44, 94, 176, 0.55);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(228, 241, 255, 0.7));
+}
+
+.cmykMenu__line {
+  width: 16px;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(24, 38, 49, 0.88);
+}
+
+.cmykMenu__panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: min(286px, calc(100vw - 24px));
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(248, 253, 255, 0.374), rgba(240, 247, 255, 0.128));
+  box-shadow: 0 22px 48px rgba(21, 39, 56, 0.25);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.cmykMenu__title {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(24, 38, 49, 0.76);
+}
+
+.cmykMenu__sliderStack {
+  display: grid;
+  gap: 8px;
+}
+
+.cmykMenu__sliderRow {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.cmykMenu__sliderLabel {
+  min-width: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(24, 38, 49, 0.82);
+}
+
+.cmykMenu__sliderRow input[type='range'] {
+  margin: 0;
+  accent-color: rgba(48, 98, 185, 0.92);
+}
+
+.cmykMenu__sliderRow input[type='range']:focus-visible {
+  outline: 2px solid rgba(50, 101, 187, 0.66);
+  outline-offset: 2px;
+}
+
+.cmykMenu__sliderValue {
+  min-width: 34px;
+  text-align: right;
+  font-size: 12px;
+  color: rgba(24, 38, 49, 0.82);
+}
+
+.cmykMenu__previewSwatch {
+  width: 100%;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.64);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.cmykMenu__previewValue {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: rgba(24, 38, 49, 0.76);
+}
+
 /* --- Luxury shell + water backdrop --- */
 
 .luxShell {
@@ -361,7 +487,9 @@ button.pill {
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  background: #96dfde;
+  background:
+    radial-gradient(ellipse 140% 120% at 18% 14%, #a9e4ef 0%, rgba(169, 228, 239, 0) 58%),
+    linear-gradient(170deg, #9edfe7 0%, #86cde2 44%, #5b8fd1 100%);
 }
 
 .luxBackdrop__wash {
@@ -369,10 +497,13 @@ button.pill {
   inset: -25%;
   /* Soft tint layer */
   background:
-    radial-gradient(ellipse 120% 90% at 28% 18%, rgba(154, 215, 228, 0.28), transparent 55%),
-    radial-gradient(ellipse 110% 95% at 72% 38%, rgba(105, 165, 224, 0.2), transparent 58%),
-    linear-gradient(165deg, rgba(154, 215, 228, 0.12) 0%, transparent 42%, rgba(105, 165, 224, 0.08) 100%);
-  filter: saturate(1.03);
+    radial-gradient(ellipse 86% 74% at 12% 10%, rgba(42, 96, 182, 0.34), transparent 62%),
+    radial-gradient(ellipse 118% 90% at 28% 18%, rgba(173, 228, 239, 0.46), transparent 56%),
+    radial-gradient(ellipse 112% 96% at 72% 38%, rgba(83, 148, 219, 0.34), transparent 60%),
+    linear-gradient(165deg, rgba(142, 213, 230, 0.24) 0%, transparent 42%, rgba(63, 118, 201, 0.2) 100%);
+  filter: saturate(1.12) contrast(1.08);
+  transform: scale(1.06) translate3d(0, 0, 0);
+  animation: waterBreath 16s ease-in-out infinite alternate;
 }
 
 .luxBackdrop__blob {
@@ -380,22 +511,34 @@ button.pill {
   width: clamp(640px, 78vw, 1240px);
   height: clamp(640px, 78vw, 1240px);
   border-radius: 999px;
-  filter: blur(80px);
-  opacity: 0.34;
-  mix-blend-mode: soft-light;
+  filter: blur(58px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
   transform: translate3d(0, 0, 0);
 }
 
 .luxBackdrop__blob--a {
   left: -22%;
   top: 6%;
-  background: radial-gradient(circle at 32% 34%, rgba(154, 215, 228, 0.88), rgba(105, 165, 224, 0.08) 68%);
+  background: radial-gradient(circle at 32% 34%, rgba(169, 230, 243, 0.92), rgba(54, 112, 196, 0.26) 72%);
+  animation: driftOne 20s ease-in-out infinite alternate;
+}
+
+.luxBackdrop__blob--c {
+  left: -18%;
+  top: -24%;
+  width: clamp(520px, 62vw, 980px);
+  height: clamp(520px, 62vw, 980px);
+  background: radial-gradient(circle at 36% 36%, rgba(76, 142, 221, 0.82), rgba(22, 65, 143, 0.52) 72%);
+  opacity: 0.6;
+  animation: driftThree 19s ease-in-out infinite alternate;
 }
 
 .luxBackdrop__blob--b {
   right: -24%;
   bottom: -12%;
-  background: radial-gradient(circle at 44% 42%, rgba(105, 165, 224, 0.75), rgba(154, 215, 228, 0.1) 70%);
+  background: radial-gradient(circle at 44% 42%, rgba(78, 141, 221, 0.88), rgba(34, 83, 166, 0.34) 72%);
+  animation: driftTwo 24s ease-in-out infinite alternate;
 }
 
 .luxBackdrop__sheen {
@@ -403,13 +546,63 @@ button.pill {
   inset: -12%;
   background: linear-gradient(
     122deg,
-    rgba(255, 255, 255, 0.14) 0%,
-    rgba(255, 255, 255, 0.04) 38%,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.08) 38%,
     rgba(255, 255, 255, 0) 56%,
-    rgba(255, 255, 255, 0.07) 82%,
+    rgba(255, 255, 255, 0.12) 82%,
     rgba(255, 255, 255, 0) 100%
   );
-  opacity: 0.38;
+  opacity: 0.52;
+  mix-blend-mode: overlay;
+  transform: translateX(-2%) translateY(0%);
+  animation: sheenMove 18s ease-in-out infinite alternate;
+}
+
+@keyframes waterBreath {
+  0% {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1.12) translate3d(0, -1.5%, 0);
+  }
+}
+
+@keyframes driftOne {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(6%, 4%, 0) scale(1.12);
+  }
+}
+
+@keyframes driftTwo {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(-5%, -3%, 0) scale(1.08);
+  }
+}
+
+@keyframes driftThree {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(7%, 6%, 0) scale(1.14);
+  }
+}
+
+@keyframes sheenMove {
+  0% {
+    transform: translateX(-2%) translateY(0%);
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateX(2%) translateY(1%);
+    opacity: 0.5;
+  }
 }
 
 .luxContent {
@@ -422,6 +615,23 @@ button.pill {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .cmykMenu__toggle {
+    transition: none !important;
+  }
+
+  .cmykMenu__toggle:hover {
+    transform: none !important;
+  }
+
+  .luxBackdrop__wash,
+  .luxBackdrop__blob--a,
+  .luxBackdrop__blob--c,
+  .luxBackdrop__blob--b,
+  .luxBackdrop__sheen {
+    animation: none !important;
+    transform: none !important;
+  }
+
   .todoItem {
     transition: none !important;
   }
